@@ -49,9 +49,15 @@ def get_manifest(url, retries=3):
     for attempt in range(retries):
         try:
             result = subprocess.check_output(
-                ["python", "-m", "yt_dlp", "--print", "manifest_url", url],
-                text=True,
-                stderr=subprocess.DEVNULL
+                [
+                    "yt-dlp",
+                    "-f", "best",
+                    "--get-url",
+                    "--user-agent",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+                    url
+                ],
+                text=True
             ).strip()
 
             if result:
@@ -59,7 +65,7 @@ def get_manifest(url, retries=3):
 
         except Exception as e:
             log(f"Extraction attempt {attempt+1} failed: {e}")
-            time.sleep(3)
+            time.sleep(4)
 
     return None
 
